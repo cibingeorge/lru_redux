@@ -45,6 +45,12 @@ module LruRedux
         end
       end
 
+      def set_multiple(key_value_arr)
+        synchronize do
+          super(key_value_arr)
+        end
+      end
+
       def each
         synchronize do
           super

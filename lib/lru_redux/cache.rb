@@ -64,6 +64,15 @@ class LruRedux::Cache
     val
   end
 
+  def set_multiple(key_value_arr)
+    key_value_arr.each do |key,val|
+      @data.delete(key)
+      @data[key] = val
+    end
+    @data.shift if @data.length > @max_size
+    val
+  end
+
   def each
     array = @data.to_a
     array.reverse!.each do |pair|

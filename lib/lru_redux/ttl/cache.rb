@@ -106,6 +106,24 @@ module LruRedux
         val
       end
 
+      def set_multiple(key_value_arr)
+        key_value_arr.each do |key, val|
+          @data_lru.delete(key)
+          @data_ttl.delete(key)
+
+          @data_lru[key] = val
+          @data_ttl[key] = Time.now.to_f
+        end
+
+        if @data_lru.size > @max_size
+          key, _ = @data_lru.first
+
+          @data_ttl.delete(key)
+          @data_lru.delete(key)
+        end
+        key_value_arr
+      end
+
       def each
         ttl_evict
 
